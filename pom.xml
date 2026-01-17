@@ -21,7 +21,7 @@
     </properties>
 
     <modules>
-
+        <module>clases-service</module>
     </modules>
 
     <dependencyManagement>
