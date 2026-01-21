@@ -22,6 +22,7 @@ public class ProfesorServiceImpl implements ProfesorService {
     private ProfesorRepository repo;
 
     @Override
+    @Transactional
     public ProfesorResponse save(ProfesorCreateRequest dto) {
 
         if(repo.existsByDni(dto.getDni())) {
@@ -69,6 +70,11 @@ public class ProfesorServiceImpl implements ProfesorService {
     public ProfesorResponse findById(Long id) {
         Profesor profesorExiste = repo.findById(id)
                 .orElseThrow(()->new NotFoundException("Profesor no encontrado"));
+
+        if (profesorExiste.isEliminado()) {
+            throw new BusinessException("El profesor se encuentra inactivo");
+        }
+
         return Mapper.toDto(profesorExiste);
     }
 

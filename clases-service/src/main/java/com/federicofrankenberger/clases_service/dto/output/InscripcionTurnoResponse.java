@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 @Builder
-public class InscripcionTurnoReponse {
+public class InscripcionTurnoResponse {
     private Long id;
     private TurnoResponse turno;
     private Long alumnoId;

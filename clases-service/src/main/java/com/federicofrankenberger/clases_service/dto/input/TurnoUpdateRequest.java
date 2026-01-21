@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class TurnoUpdateRequest {
     private LocalDateTime inicio;
     private LocalDateTime fin;
-    private int cupoMaximo;
+    private Integer cupoMaximo;
     private Long idProfesor;
     private Long idClase;
 }

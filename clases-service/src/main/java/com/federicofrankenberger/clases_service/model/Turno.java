@@ -25,10 +25,10 @@ public class Turno {
     private LocalDateTime fin;
 
     @Column(nullable=false)
-    private int cupoMaximo;
+    private Integer cupoMaximo;
 
     @Column(nullable=false)
-    private int cupoDisponible;
+    private Integer cupoDisponible;
 
     @ManyToOne (optional = false)
     @JoinColumn(name = "clase_id",nullable=false)

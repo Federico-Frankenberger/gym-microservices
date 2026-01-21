@@ -9,7 +9,7 @@
 
 **Arquitectura backend basada en microservicios para la gestión integral de un gimnasio.**
 
-[Descripción](#-descripción) • [Arquitectura](#-arquitectura) • [Microservicios](#-microservicios) • [Tecnologías](#-tecnologías) • [Roadmap](#-roadmap-de-infraestructura) • [Autor](#-autor)
+[Descripción](#-descripción) • [Arquitectura](#-arquitectura) • [Microservicios](#-microservicios) • [Tecnologías](#-tecnologías) • [Roadmap](#-roadmap-de-infraestructura) • [Consideraciones](#-consideraciones-técnicas) • [Autor](#-autor)
 
 ---
 </div>
@@ -26,6 +26,7 @@ El sistema está diseñado para ser escalable y mantenible, donde cada servicio 
 
 El ecosistema está compuesto por múltiples aplicaciones **Spring Boot** que se comunican vía **REST API**.
 
+* **Diseño:** Arquitectura por capas (Controller, Service, Repository).
 * **Independencia:** Cada microservicio posee su propia base de datos (*Database per service*) para garantizar el desacoplamiento.
 * **Comunicación:** Interacción síncrona mediante APIs REST (con planes de migrar a mensajería asíncrona).
 * **Escalabilidad:** Diseñado para soportar despliegues distribuidos y balanceo de carga.
@@ -48,6 +49,7 @@ El ecosistema está compuesto por múltiples aplicaciones **Spring Boot** que se
 * ✅ Autorización basada en roles y permisos.
 * ✅ Emisión y validación de tokens JWT.
 * ✅ Control de acceso a los microservicios.
+* ✅ Servicio independiente, sin acceso a datos de negocio.
 
 ---
 
@@ -80,12 +82,13 @@ El ecosistema está compuesto por múltiples aplicaciones **Spring Boot** que se
 | Categoría | Tecnología                  |
 | :--- |:----------------------------|
 | **Lenguaje** | Java 21                     |
-| **Framework** | Spring Boot 4.x             |
+| **Framework** | Spring Boot 3.x             |
 | **Persistencia** | Spring Data JPA / Hibernate |
 | **Base de Datos** | MySQL                       |
 | **Gestión de Paquetes** | Maven                       |
 | **Librerías** | Lombok, Spring Web          |
-| **Contenedores** | Docker (En desarrollo)      |
+| **Testing** | JUnit 5, Mockito            |
+| **Contenedores** | Docker                      |
 
 ---
 
@@ -94,10 +97,12 @@ El ecosistema está compuesto por múltiples aplicaciones **Spring Boot** que se
 El sistema incorpora componentes de infraestructura de manera progresiva:
 
 - [x] **Fase 1:** Microservicios independientes con bases de datos aisladas.
-- [ ] **Fase 2:** Service Discovery con **Netflix Eureka**.
-- [ ] **Fase 3:** Enrutamiento inteligente con **Spring Cloud Gateway**.
-- [ ] **Fase 4:** Resiliencia con **Resilience4j** (Circuit Breakers).
-- [ ] **Fase 5:** Contenerización y orquestación con **Docker Compose**.
+- [ ] **Fase 2:** Testing (unitarios e integración básica).
+- [ ] **Fase 3:** Service Discovery con **Netflix Eureka**.
+- [ ] **Fase 4:** Enrutamiento inteligente con **Spring Cloud Gateway**.
+- [ ] **Fase 5:** Resiliencia con **Resilience4j** (Circuit Breakers).
+- [ ] **Fase 6:** Seguridad con **Spring Security + JWT**.
+- [ ] **Fase 7:** Contenerización y orquestación con **Docker Compose**.
 
 ---
 
@@ -144,9 +149,13 @@ Sigue estos pasos para levantar el entorno de desarrollo localmente:
 
 2.  **Configuración de Base de Datos:**
     Asegúrate de tener MySQL corriendo. Los servicios esperan las siguientes bases de datos (configurables en `application.properties`):
-    * `db_clases`
-    * `db_membresias`
-    * `db_pagos`
+
+    * `usuarios_db`
+    * `clases_db`
+    * `membresias_db`
+    * `pagos_db`
+    * `auth_db`
+    
 
 3.  **Ejecutar los servicios:**
     Navega a la carpeta de cada microservicio y ejecuta:
@@ -156,10 +165,17 @@ Sigue estos pasos para levantar el entorno de desarrollo localmente:
 
 ---
 
-## 📌 Consideraciones
+## 📌 Consideraciones Técnicas
 
 * **Autenticación:** La seguridad (OAuth2/JWT) se implementará tras estabilizar la comunicación entre servicios.
 * **Puertos:** Cada servicio corre en un puerto distinto por defecto (ej. `8081`, `8082`, `8083`) para evitar conflictos en local.
+
+---
+
+## 🔮 Consideraciones Futuras
+
+* Incorporación de **mensajería asíncrona** (RabbitMQ o Kafka) para desacoplar procesos como inscripciones, pagos y activación de membresías.
+* Migración de la infraestructura a **Kubernetes** para la gestión de despliegues, escalado automático y alta disponibilidad en entornos productivos.
 
 ---
 

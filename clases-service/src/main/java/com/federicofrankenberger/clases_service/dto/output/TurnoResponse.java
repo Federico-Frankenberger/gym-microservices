@@ -14,8 +14,8 @@ public class TurnoResponse {
     private Long id;
     private LocalDateTime inicio;
     private LocalDateTime fin;
-    private int cupoMaximo;
-    private int cupoDisponible;
+    private Integer cupoMaximo;
+    private Integer cupoDisponible;
     private ProfesorResponse profesor;
     private ClaseResponse clase;
 }

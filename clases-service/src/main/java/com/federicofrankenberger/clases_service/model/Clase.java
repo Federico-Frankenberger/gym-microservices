@@ -23,7 +23,7 @@ public class Clase {
     private String descripcion;
 
     @Column(nullable=false)
-    private int duracionMinutos;
+    private Integer duracionMinutos;
 
     @Column(nullable=false)
     private boolean eliminado;

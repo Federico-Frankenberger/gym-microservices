@@ -2,7 +2,7 @@ package com.federicofrankenberger.clases_service.mapper;
 
 import com.federicofrankenberger.clases_service.dto.input.*;
 import com.federicofrankenberger.clases_service.dto.output.ClaseResponse;
-import com.federicofrankenberger.clases_service.dto.output.InscripcionTurnoReponse;
+import com.federicofrankenberger.clases_service.dto.output.InscripcionTurnoResponse;
 import com.federicofrankenberger.clases_service.dto.output.ProfesorResponse;
 import com.federicofrankenberger.clases_service.dto.output.TurnoResponse;
 import com.federicofrankenberger.clases_service.model.Clase;
@@ -22,11 +22,15 @@ public class Mapper {
                 .nombre(ccr.getNombre())
                 .descripcion(ccr.getDescripcion())
                 .duracionMinutos(ccr.getDuracionMinutos())
+                .eliminado(false)
                 .build();
     }
 
     // ClaseUpdateRequest --> Clase
-    public static void updateEntity(ClaseUpdateRequest cur, Clase clase) {
+    public static void updateClase(ClaseUpdateRequest cur, Clase clase) {
+        if (cur == null || clase == null) {
+            return;
+        }
         if (cur.getNombre() != null) {
             clase.setNombre(cur.getNombre());
         }
@@ -68,6 +72,9 @@ public class Mapper {
 
     // ProfesorUpdateRequest --> Profesor
     public static void updateProfesor (ProfesorUpdateRequest puf, Profesor prof) {
+        if (puf == null || prof == null) {
+            return;
+        }
         if (puf.getNombre() != null) {
             prof.setNombre(puf.getNombre());
         }
@@ -105,27 +112,33 @@ public class Mapper {
                 .inicio(tcr.getInicio())
                 .fin(tcr.getFin())
                 .cupoMaximo(tcr.getCupoMaximo())
+                .cupoDisponible(tcr.getCupoMaximo())
                 .profesor(prof)
                 .clase(clase)
+                .eliminado(false)
                 .build();
 
     }
 
     // TurnoUpdateRequest --> Turno
     public static void updateTurno (TurnoUpdateRequest puf, Turno turno,Clase clase,Profesor prof) {
+       if (puf == null || turno == null){
+           return;
+       }
+
         if (puf.getInicio() != null) {
             turno.setInicio(puf.getInicio());
         }
         if (puf.getFin() != null) {
             turno.setFin(puf.getFin());
         }
-        if (puf.getCupoMaximo()!=turno.getCupoMaximo()) {
+        if (puf.getCupoMaximo() != null) {
             turno.setCupoMaximo(puf.getCupoMaximo());
         }
-        if (turno.getProfesor() != null) {
+        if (prof != null) {
             turno.setProfesor(prof);
         }
-        if (turno.getClase() != null) {
+        if (clase != null) {
             turno.setClase(clase);
         }
     }
@@ -158,12 +171,12 @@ public class Mapper {
                 .build();
     }
 
-    // InscripcionTurno --> InscripcionTurnoReponse
-    public static InscripcionTurnoReponse toDto(InscripcionTurno inst){
+    // InscripcionTurno --> InscripcionTurnoResponse
+    public static InscripcionTurnoResponse toDto(InscripcionTurno inst){
         if (inst == null) {
             return null;
         }
-        return InscripcionTurnoReponse.builder()
+        return InscripcionTurnoResponse.builder()
                 .id(inst.getId())
                 .alumnoId(inst.getIdAlumno())
                 .estado(inst.getEstado())
