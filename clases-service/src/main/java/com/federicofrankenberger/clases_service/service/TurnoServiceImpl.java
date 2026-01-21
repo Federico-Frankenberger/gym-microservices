@@ -4,7 +4,7 @@ import com.federicofrankenberger.clases_service.dto.input.TurnoCreateRequest;
 import com.federicofrankenberger.clases_service.dto.input.TurnoUpdateRequest;
 import com.federicofrankenberger.clases_service.dto.output.TurnoResponse;
 import com.federicofrankenberger.clases_service.exception.BusinessException;
-import com.federicofrankenberger.clases_service.mapper.Mapper;
+import com.federicofrankenberger.clases_service.mapper.TurnoMapper;
 import com.federicofrankenberger.clases_service.model.Clase;
 import com.federicofrankenberger.clases_service.model.Profesor;
 import com.federicofrankenberger.clases_service.model.Turno;
@@ -39,9 +39,9 @@ public class TurnoServiceImpl implements TurnoService{
         Profesor profesor = profesorRepository.findById(dto.getIdProfesor())
                 .orElseThrow(() -> new BusinessException("Profesor no encontrado"));
 
-        Turno turno = Mapper.toEntity(dto,profesor,clase);
+        Turno turno = TurnoMapper.toEntity(dto,profesor,clase);
 
-        return Mapper.toDto(turnoRepository.save(turno));
+        return TurnoMapper.toDto(turnoRepository.save(turno));
     }
 
     @Override
@@ -66,9 +66,9 @@ public class TurnoServiceImpl implements TurnoService{
         Profesor profesor = profesorRepository.findById(dto.getIdProfesor())
                 .orElseThrow(() -> new BusinessException("Profesor no encontrado"));
 
-        Mapper.updateTurno(dto,turnoExistente,clase,profesor);
+        TurnoMapper.updateTurno(dto,turnoExistente,clase,profesor);
 
-        return Mapper.toDto(turnoRepository.save(turnoExistente));
+        return TurnoMapper.toDto(turnoRepository.save(turnoExistente));
     }
 
     @Override
@@ -92,11 +92,11 @@ public class TurnoServiceImpl implements TurnoService{
             throw new BusinessException("El turno se encuentra eliminado");
         }
 
-        return Mapper.toDto(turnoExistente);
+        return TurnoMapper.toDto(turnoExistente);
     }
 
     @Override
     public List<TurnoResponse> findAll() {
-        return turnoRepository.findAll().stream().map(Mapper::toDto).toList();
+        return turnoRepository.findAll().stream().map(TurnoMapper::toDto).toList();
     }
 }

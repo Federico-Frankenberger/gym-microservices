@@ -6,7 +6,7 @@ import com.federicofrankenberger.clases_service.dto.output.ClaseResponse;
 import com.federicofrankenberger.clases_service.exception.BusinessException;
 import com.federicofrankenberger.clases_service.exception.DuplicateResourceException;
 import com.federicofrankenberger.clases_service.exception.NotFoundException;
-import com.federicofrankenberger.clases_service.mapper.Mapper;
+import com.federicofrankenberger.clases_service.mapper.ClaseMapper;
 import com.federicofrankenberger.clases_service.model.Clase;
 import com.federicofrankenberger.clases_service.repository.ClaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class ClaseServiceImpl implements ClaseService{
                 .duracionMinutos(dto.getDuracionMinutos())
                 .eliminado(false)
                 .build();
-        return Mapper.toDto(repo.save(clase));
+        return ClaseMapper.toDto(repo.save(clase));
 
     }
 
@@ -43,8 +43,8 @@ public class ClaseServiceImpl implements ClaseService{
     public ClaseResponse update(Long id, ClaseUpdateRequest dto) {
         Clase claseExistente = repo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Clase no encontrada con ID: " + id));
-        Mapper.updateClase(dto, claseExistente);
-        return Mapper.toDto(repo.save(claseExistente));
+        ClaseMapper.updateClase(dto, claseExistente);
+        return ClaseMapper.toDto(repo.save(claseExistente));
     }
 
     @Override
@@ -66,11 +66,11 @@ public class ClaseServiceImpl implements ClaseService{
         if(claseExistente.isEliminado()) {
             throw new BusinessException("La clase se encuentra inactiva.");
         }
-        return Mapper.toDto(claseExistente);
+        return ClaseMapper.toDto(claseExistente);
     }
 
     @Override
     public List<ClaseResponse> findAll() {
-        return repo.findAll().stream().map(Mapper::toDto).toList();
+        return repo.findAll().stream().map(ClaseMapper::toDto).toList();
     }
 }

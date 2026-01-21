@@ -6,7 +6,7 @@ import com.federicofrankenberger.clases_service.dto.output.ProfesorResponse;
 import com.federicofrankenberger.clases_service.exception.BusinessException;
 import com.federicofrankenberger.clases_service.exception.DuplicateResourceException;
 import com.federicofrankenberger.clases_service.exception.NotFoundException;
-import com.federicofrankenberger.clases_service.mapper.Mapper;
+import com.federicofrankenberger.clases_service.mapper.ProfesorMapper;
 import com.federicofrankenberger.clases_service.model.Profesor;
 import com.federicofrankenberger.clases_service.repository.ProfesorRepository;
 import jakarta.transaction.Transactional;
@@ -36,7 +36,7 @@ public class ProfesorServiceImpl implements ProfesorService {
                 .eliminado(false)
                 .build();
 
-        return Mapper.toDto(repo.save(profe));
+        return ProfesorMapper.toDto(repo.save(profe));
     }
 
     @Override
@@ -49,9 +49,9 @@ public class ProfesorServiceImpl implements ProfesorService {
             throw  new DuplicateResourceException("El DNI ya pertenece a otro profesor");
         }
 
-        Mapper.updateProfesor(dto, profesorExistente);
+        ProfesorMapper.updateProfesor(dto, profesorExistente);
 
-        return Mapper.toDto(repo.save(profesorExistente));
+        return ProfesorMapper.toDto(repo.save(profesorExistente));
     }
 
     @Override
@@ -75,11 +75,11 @@ public class ProfesorServiceImpl implements ProfesorService {
             throw new BusinessException("El profesor se encuentra inactivo");
         }
 
-        return Mapper.toDto(profesorExiste);
+        return ProfesorMapper.toDto(profesorExiste);
     }
 
     @Override
     public List<ProfesorResponse> findAll() {
-        return repo.findAll().stream().map(Mapper::toDto).toList();
+        return repo.findAll().stream().map(ProfesorMapper::toDto).toList();
     }
 }

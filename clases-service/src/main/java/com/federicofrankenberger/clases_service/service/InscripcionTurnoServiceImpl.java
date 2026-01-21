@@ -4,7 +4,7 @@ import com.federicofrankenberger.clases_service.dto.input.InscripcionTurnoReques
 import com.federicofrankenberger.clases_service.dto.output.InscripcionTurnoResponse;
 import com.federicofrankenberger.clases_service.exception.BusinessException;
 import com.federicofrankenberger.clases_service.exception.NotFoundException;
-import com.federicofrankenberger.clases_service.mapper.Mapper;
+import com.federicofrankenberger.clases_service.mapper.InscripcionTurnoMapper;
 import com.federicofrankenberger.clases_service.model.EstadoInscripcion;
 import com.federicofrankenberger.clases_service.model.InscripcionTurno;
 import com.federicofrankenberger.clases_service.model.Turno;
@@ -59,7 +59,7 @@ public class InscripcionTurnoServiceImpl implements InscripcionTurnoService {
         repo.save(inscripcion);
         turnoRepository.save(turno);
 
-        return Mapper.toDto(inscripcion);
+        return InscripcionTurnoMapper.toDto(inscripcion);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class InscripcionTurnoServiceImpl implements InscripcionTurnoService {
         InscripcionTurno inscripcion = repo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Inscripción no encontrada"));
 
-        return Mapper.toDto(inscripcion);
+        return InscripcionTurnoMapper.toDto(inscripcion);
     }
 
     @Override
@@ -123,11 +123,11 @@ public class InscripcionTurnoServiceImpl implements InscripcionTurnoService {
             throw new NotFoundException("Turno no encontrado");
         }
 
-        return repo.findByTurnoId(turnoId).stream().map(Mapper::toDto).toList();
+        return repo.findByTurnoId(turnoId).stream().map(InscripcionTurnoMapper::toDto).toList();
     }
 
     @Override
     public List<InscripcionTurnoResponse> findByAlumno(Long alumnoId) {
-        return repo.findByIdAlumno(alumnoId).stream().map(Mapper::toDto).toList();
+        return repo.findByIdAlumno(alumnoId).stream().map(InscripcionTurnoMapper::toDto).toList();
     }
 }
